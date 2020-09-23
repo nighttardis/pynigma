@@ -9,138 +9,185 @@ from kivy.lang import Builder
 from kivy.properties import ListProperty
 from time import sleep
 from enimga import Enimga
+from kivy.properties import (
+    NumericProperty, ReferenceListProperty, ObjectProperty, Property
+)
 
 #https://stackoverflow.com/questions/57118705/kivy-define-background-color-of-label
 
-kv = '''
-<ColoredLabel>:
-    canvas.before:
-        Color:
-            rgba: self.background_color
-        Rectangle:
-            pos: self.pos
-            size: self.size
-    '''
-
-Builder.load_string(kv)
+# kv = '''
+# <ColoredLabel>:
+#     canvas.before:
+#         Color:
+#             rgba: self.background_color
+#         Rectangle:
+#             pos: self.pos
+#             size: self.size
+#     '''
+#
+# Builder.load_string(kv)
 
 
 class ColoredLabel(Label):
     background_color = ListProperty((0, 0, 0, 1))
+    width = Property(50.0)
+    height = Property(50.0)
+    size = (50, 50)
 
 
-class TestApp(App):
+class EnigmaUI(Widget):
+    output_a = ObjectProperty(None)
+    output_b = ObjectProperty(None)
+    output_c = ObjectProperty(None)
+    output_d = ObjectProperty(None)
+    output_e = ObjectProperty(None)
+    output_f = ObjectProperty(None)
+    output_g = ObjectProperty(None)
+    output_h = ObjectProperty(None)
+    output_i = ObjectProperty(None)
+    output_j = ObjectProperty(None)
+    output_k = ObjectProperty(None)
+    output_l = ObjectProperty(None)
+    output_m = ObjectProperty(None)
+    output_n = ObjectProperty(None)
+    output_o = ObjectProperty(None)
+    output_p = ObjectProperty(None)
+    output_q = ObjectProperty(None)
+    output_r = ObjectProperty(None)
+    output_s = ObjectProperty(None)
+    output_t = ObjectProperty(None)
+    output_u = ObjectProperty(None)
+    output_v = ObjectProperty(None)
+    output_w = ObjectProperty(None)
+    output_x = ObjectProperty(None)
+    output_y = ObjectProperty(None)
+    output_z = ObjectProperty(None)
+
+    def key_action(self, *args):
+        # print(f"got a key event: {list(args)}")
+        k = list(args)[-2].upper()
+        try:
+            getattr(self, f"output_{k.lower()}").background_color = (1, 1, 1, 1)
+            getattr(self, f"output_{k.lower()}").color = (0, 0, 0)
+            # print(getattr(self, f"output_{k.lower()}").size)
+        except AttributeError:
+            pass
+
+class EnigmaApp(App):
 
     KEYS_COLOR = (1, 0, 0, 1)
 
-    KEYS = {
-        "A": ColoredLabel(text="A", background_color=KEYS_COLOR),
-        "B": ColoredLabel(text="B", background_color=KEYS_COLOR),
-        "C": ColoredLabel(text="C", background_color=KEYS_COLOR),
-        "D": ColoredLabel(text="D", background_color=KEYS_COLOR),
-        "E": ColoredLabel(text="E", background_color=KEYS_COLOR),
-        "F": ColoredLabel(text="F", background_color=KEYS_COLOR),
-        "G": ColoredLabel(text="G", background_color=KEYS_COLOR),
-        "H": ColoredLabel(text="H", background_color=KEYS_COLOR),
-        "I": ColoredLabel(text="I", background_color=KEYS_COLOR),
-        "J": ColoredLabel(text="J", background_color=KEYS_COLOR),
-        "K": ColoredLabel(text="K", background_color=KEYS_COLOR),
-        "L": ColoredLabel(text="L", background_color=KEYS_COLOR),
-        "M": ColoredLabel(text="M", background_color=KEYS_COLOR),
-        "N": ColoredLabel(text="N", background_color=KEYS_COLOR),
-        "O": ColoredLabel(text="O", background_color=KEYS_COLOR),
-        "P": ColoredLabel(text="P", background_color=KEYS_COLOR),
-        "Q": ColoredLabel(text="Q", background_color=KEYS_COLOR),
-        "R": ColoredLabel(text="R", background_color=KEYS_COLOR),
-        "S": ColoredLabel(text="S", background_color=KEYS_COLOR),
-        "T": ColoredLabel(text="T", background_color=KEYS_COLOR),
-        "U": ColoredLabel(text="U", background_color=KEYS_COLOR),
-        "V": ColoredLabel(text="V", background_color=KEYS_COLOR),
-        "W": ColoredLabel(text="W", background_color=KEYS_COLOR),
-        "X": ColoredLabel(text="X", background_color=KEYS_COLOR),
-        "Y": ColoredLabel(text="Y", background_color=KEYS_COLOR),
-        "Z": ColoredLabel(text="Z", background_color=KEYS_COLOR)
-    }
+    # KEYS = {
+    #     "A": ColoredLabel(text="A", background_color=KEYS_COLOR),
+    #     "B": ColoredLabel(text="B", background_color=KEYS_COLOR),
+    #     "C": ColoredLabel(text="C", background_color=KEYS_COLOR),
+    #     "D": ColoredLabel(text="D", background_color=KEYS_COLOR),
+    #     "E": ColoredLabel(text="E", background_color=KEYS_COLOR),
+    #     "F": ColoredLabel(text="F", background_color=KEYS_COLOR),
+    #     "G": ColoredLabel(text="G", background_color=KEYS_COLOR),
+    #     "H": ColoredLabel(text="H", background_color=KEYS_COLOR),
+    #     "I": ColoredLabel(text="I", background_color=KEYS_COLOR),
+    #     "J": ColoredLabel(text="J", background_color=KEYS_COLOR),
+    #     "K": ColoredLabel(text="K", background_color=KEYS_COLOR),
+    #     "L": ColoredLabel(text="L", background_color=KEYS_COLOR),
+    #     "M": ColoredLabel(text="M", background_color=KEYS_COLOR),
+    #     "N": ColoredLabel(text="N", background_color=KEYS_COLOR),
+    #     "O": ColoredLabel(text="O", background_color=KEYS_COLOR),
+    #     "P": ColoredLabel(text="P", background_color=KEYS_COLOR),
+    #     "Q": ColoredLabel(text="Q", background_color=KEYS_COLOR),
+    #     "R": ColoredLabel(text="R", background_color=KEYS_COLOR),
+    #     "S": ColoredLabel(text="S", background_color=KEYS_COLOR),
+    #     "T": ColoredLabel(text="T", background_color=KEYS_COLOR),
+    #     "U": ColoredLabel(text="U", background_color=KEYS_COLOR),
+    #     "V": ColoredLabel(text="V", background_color=KEYS_COLOR),
+    #     "W": ColoredLabel(text="W", background_color=KEYS_COLOR),
+    #     "X": ColoredLabel(text="X", background_color=KEYS_COLOR),
+    #     "Y": ColoredLabel(text="Y", background_color=KEYS_COLOR),
+    #     "Z": ColoredLabel(text="Z", background_color=KEYS_COLOR)
+    # }
 
     OUTPUT_COLORS = (0, 0, 0, 0)
 
-    OUTPUT = {
-        "A": ColoredLabel(text="A", background_color=OUTPUT_COLORS),
-        "B": ColoredLabel(text="B", background_color=OUTPUT_COLORS),
-        "C": ColoredLabel(text="C", background_color=OUTPUT_COLORS),
-        "D": ColoredLabel(text="D", background_color=OUTPUT_COLORS),
-        "E": ColoredLabel(text="E", background_color=OUTPUT_COLORS),
-        "F": ColoredLabel(text="F", background_color=OUTPUT_COLORS),
-        "G": ColoredLabel(text="G", background_color=OUTPUT_COLORS),
-        "H": ColoredLabel(text="H", background_color=OUTPUT_COLORS),
-        "I": ColoredLabel(text="I", background_color=OUTPUT_COLORS),
-        "J": ColoredLabel(text="J", background_color=OUTPUT_COLORS),
-        "K": ColoredLabel(text="K", background_color=OUTPUT_COLORS),
-        "L": ColoredLabel(text="L", background_color=OUTPUT_COLORS),
-        "M": ColoredLabel(text="M", background_color=OUTPUT_COLORS),
-        "N": ColoredLabel(text="N", background_color=OUTPUT_COLORS),
-        "O": ColoredLabel(text="O", background_color=OUTPUT_COLORS),
-        "P": ColoredLabel(text="P", background_color=OUTPUT_COLORS),
-        "Q": ColoredLabel(text="Q", background_color=OUTPUT_COLORS),
-        "R": ColoredLabel(text="R", background_color=OUTPUT_COLORS),
-        "S": ColoredLabel(text="S", background_color=OUTPUT_COLORS),
-        "T": ColoredLabel(text="T", background_color=OUTPUT_COLORS),
-        "U": ColoredLabel(text="U", background_color=OUTPUT_COLORS),
-        "V": ColoredLabel(text="V", background_color=OUTPUT_COLORS),
-        "W": ColoredLabel(text="W", background_color=OUTPUT_COLORS),
-        "X": ColoredLabel(text="X", background_color=OUTPUT_COLORS),
-        "Y": ColoredLabel(text="Y", background_color=OUTPUT_COLORS),
-        "Z": ColoredLabel(text="Z", background_color=OUTPUT_COLORS)
-    }
+    # OUTPUT = {
+    #     "A": ColoredLabel(text="A", background_color=OUTPUT_COLORS),
+    #     "B": ColoredLabel(text="B", background_color=OUTPUT_COLORS),
+    #     "C": ColoredLabel(text="C", background_color=OUTPUT_COLORS),
+    #     "D": ColoredLabel(text="D", background_color=OUTPUT_COLORS),
+    #     "E": ColoredLabel(text="E", background_color=OUTPUT_COLORS),
+    #     "F": ColoredLabel(text="F", background_color=OUTPUT_COLORS),
+    #     "G": ColoredLabel(text="G", background_color=OUTPUT_COLORS),
+    #     "H": ColoredLabel(text="H", background_color=OUTPUT_COLORS),
+    #     "I": ColoredLabel(text="I", background_color=OUTPUT_COLORS),
+    #     "J": ColoredLabel(text="J", background_color=OUTPUT_COLORS),
+    #     "K": ColoredLabel(text="K", background_color=OUTPUT_COLORS),
+    #     "L": ColoredLabel(text="L", background_color=OUTPUT_COLORS),
+    #     "M": ColoredLabel(text="M", background_color=OUTPUT_COLORS),
+    #     "N": ColoredLabel(text="N", background_color=OUTPUT_COLORS),
+    #     "O": ColoredLabel(text="O", background_color=OUTPUT_COLORS),
+    #     "P": ColoredLabel(text="P", background_color=OUTPUT_COLORS),
+    #     "Q": ColoredLabel(text="Q", background_color=OUTPUT_COLORS),
+    #     "R": ColoredLabel(text="R", background_color=OUTPUT_COLORS),
+    #     "S": ColoredLabel(text="S", background_color=OUTPUT_COLORS),
+    #     "T": ColoredLabel(text="T", background_color=OUTPUT_COLORS),
+    #     "U": ColoredLabel(text="U", background_color=OUTPUT_COLORS),
+    #     "V": ColoredLabel(text="V", background_color=OUTPUT_COLORS),
+    #     "W": ColoredLabel(text="W", background_color=OUTPUT_COLORS),
+    #     "X": ColoredLabel(text="X", background_color=OUTPUT_COLORS),
+    #     "Y": ColoredLabel(text="Y", background_color=OUTPUT_COLORS),
+    #     "Z": ColoredLabel(text="Z", background_color=OUTPUT_COLORS)
+    # }
 
     e = Enimga()
 
     def build(self):
-        Window.bind(on_key_down=self.key_action)
-        Window.bind(on_key_up=self.key_up)
-        root = BoxLayout(orientation='vertical')
+        lkasjdf = EnigmaUI()
+        Window.bind(on_key_down=lkasjdf.key_action)
+        return lkasjdf
+        # Window.bind(on_key_down=self.key_action)
+        # Window.bind(on_key_up=self.key_up)
+        # root = BoxLayout(orientation='vertical')
+        #
+        # self.output = TextInput(readonly=True)
+        #
+        # root.add_widget(self.output)
+        #
+        # row_1o = BoxLayout(orientation='horizontal')
+        # for letter in ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"]:
+        #     row_1o.add_widget(self.OUTPUT[letter])
+        #
+        # root.add_widget(row_1o)
+        #
+        # row_2o = BoxLayout(orientation="horizontal")
+        # for letter in ["A", "S", "D", "F", "G", "H", "J", "K", "L"]:
+        #     row_2o.add_widget(self.OUTPUT[letter])
+        #
+        # root.add_widget(row_2o)
+        #
+        # row_3o = BoxLayout(orientation="horizontal")
+        # for letter in ["Z", "X", "C", "V", "B", "N", 'M']:
+        #     row_3o.add_widget(self.OUTPUT[letter])
+        #
+        # root.add_widget(row_3o)
+        #
+        # row_1 = BoxLayout(orientation='horizontal')
+        # for letter in ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"]:
+        #     row_1.add_widget(self.KEYS[letter])
+        #
+        # root.add_widget(row_1)
+        #
+        # row_2 = BoxLayout(orientation="horizontal")
+        # for letter in ["A", "S", "D", "F", "G", "H", "J", "K", "L"]:
+        #     row_2.add_widget(self.KEYS[letter])
+        #
+        # root.add_widget(row_2)
+        #
+        # row_3 = BoxLayout(orientation="horizontal")
+        # for letter in ["Z", "X", "C", "V", "B", "N", 'M']:
+        #     row_3.add_widget(self.KEYS[letter])
+        #
+        # root.add_widget(row_3)
 
-        self.output = TextInput(readonly=True)
-
-        root.add_widget(self.output)
-
-        row_1o = BoxLayout(orientation='horizontal')
-        for letter in ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"]:
-            row_1o.add_widget(self.OUTPUT[letter])
-
-        root.add_widget(row_1o)
-
-        row_2o = BoxLayout(orientation="horizontal")
-        for letter in ["A", "S", "D", "F", "G", "H", "J", "K", "L"]:
-            row_2o.add_widget(self.OUTPUT[letter])
-
-        root.add_widget(row_2o)
-
-        row_3o = BoxLayout(orientation="horizontal")
-        for letter in ["Z", "X", "C", "V", "B", "N", 'M']:
-            row_3o.add_widget(self.OUTPUT[letter])
-
-        root.add_widget(row_3o)
-
-        row_1 = BoxLayout(orientation='horizontal')
-        for letter in ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"]:
-            row_1.add_widget(self.KEYS[letter])
-
-        root.add_widget(row_1)
-
-        row_2 = BoxLayout(orientation="horizontal")
-        for letter in ["A", "S", "D", "F", "G", "H", "J", "K", "L"]:
-            row_2.add_widget(self.KEYS[letter])
-
-        root.add_widget(row_2)
-
-        row_3 = BoxLayout(orientation="horizontal")
-        for letter in ["Z", "X", "C", "V", "B", "N", 'M']:
-            row_3.add_widget(self.KEYS[letter])
-
-        root.add_widget(row_3)
-
-        return root
+        # return root
 
     def key_action(self, *args):
         # print(f"got a key event: {list(args)}")
@@ -175,4 +222,4 @@ class TestApp(App):
             return list(Keyboard.keycodes.keys())[keycodes.index(value)]
         return ''
 
-TestApp().run()
+EnigmaApp().run()

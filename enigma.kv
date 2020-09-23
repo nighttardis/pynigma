@@ -1,0 +1,111 @@
+<ColoredLabel>:
+    canvas.before:
+        Color:
+            rgba: (191/255, 191/255, 191/255, 1)
+        Ellipse:
+            pos: self.pos
+            size: self.size
+        Color:
+            rgba: self.background_color
+        Ellipse:
+            pos: (self.x+self.height * ((1-0.8)/2), self.y+self.width*((1-0.8)/2))
+            size: (self.width * 0.8, self.height * 0.8)
+
+<EnigmaUI>:
+    output: output
+    output_a: output_a
+#    output_b: output_b
+#    output_c: output_c
+    output_d: output_d
+    output_e: output_e
+    output_f: output_f
+    output_g: output_g
+    output_h: output_h
+    output_i: output_i
+    output_j: output_j
+    output_k: output_k
+    output_l: output_l
+#    output_m: output_m
+#    output_n: output_n
+    output_o: output_o
+    output_p: output_p
+    output_q: output_q
+    output_r: output_r
+    output_s: output_s
+    output_t: output_t
+    output_u: output_u
+#    output_v: output_v
+    output_w: output_w
+#    output_x: output_x
+    output_y: output_y
+#    output_z: output_z
+
+    BoxLayout:
+        orientation: 'vertical'
+        size: (self.parent.width, 200)
+        TextInput:
+            id: output
+            readonly: True
+        BoxLayout:
+            size: (self.parent.width, 100)
+            orientation: 'horizontal'
+            ColoredLabel:
+                text: "Q"
+                id: output_q
+            ColoredLabel:
+                text: "W"
+                id: output_w
+            ColoredLabel:
+                text: "E"
+                id: output_e
+            ColoredLabel:
+                text: "R"
+                id: output_r
+            ColoredLabel:
+                text: "T"
+                id: output_t
+            ColoredLabel:
+                text: "Y"
+                id: output_y
+            ColoredLabel:
+                text: "U"
+                id: output_u
+            ColoredLabel:
+                text: "I"
+                id: output_i
+            ColoredLabel:
+                text: "O"
+                id: output_o
+            ColoredLabel:
+                text: "P"
+                id: output_p
+        BoxLayout:
+            size: (self.parent.width, 70)
+            orientation: 'horizontal'
+            ColoredLabel:
+                text: "A"
+                id: output_a
+            ColoredLabel:
+                text: "S"
+                id: output_s
+            ColoredLabel:
+                text: "D"
+                id: output_d
+            ColoredLabel:
+                text: "F"
+                id: output_f
+            ColoredLabel:
+                text: "G"
+                id: output_g
+            ColoredLabel:
+                text: "H"
+                id: output_h
+            ColoredLabel:
+                text: "J"
+                id: output_j
+            ColoredLabel:
+                text: "K"
+                id: output_k
+            ColoredLabel:
+                text: "L"
+                id: output_l
