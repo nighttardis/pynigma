@@ -1,4 +1,5 @@
 <ColoredLabel>:
+    pos_hint: {'x': 0.5, 'y': 0.5}
     canvas.before:
         Color:
             rgba: (191/255, 191/255, 191/255, 1)
@@ -11,11 +12,19 @@
             pos: (self.x+self.height * ((1-0.8)/2), self.y+self.width*((1-0.8)/2))
             size: (self.width * 0.8, self.height * 0.8)
 
+<ColoredBox>:
+    canvas.before:
+        Color:
+            rgba: self.background_color
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
 <EnigmaUI>:
     output: output
     output_a: output_a
-#    output_b: output_b
-#    output_c: output_c
+    output_b: output_b
+    output_c: output_c
     output_d: output_d
     output_e: output_e
     output_f: output_f
@@ -25,8 +34,8 @@
     output_j: output_j
     output_k: output_k
     output_l: output_l
-#    output_m: output_m
-#    output_n: output_n
+    output_m: output_m
+    output_n: output_n
     output_o: output_o
     output_p: output_p
     output_q: output_q
@@ -34,18 +43,24 @@
     output_s: output_s
     output_t: output_t
     output_u: output_u
-#    output_v: output_v
+    output_v: output_v
     output_w: output_w
-#    output_x: output_x
+    output_x: output_x
     output_y: output_y
-#    output_z: output_z
+    output_z: output_z
 
     BoxLayout:
         orientation: 'vertical'
-        size: (self.parent.width, 200)
+        size: (self.parent.width, self.parent.height)
+        BoxLayout:
+            orientation: 'vertical'
+            size: (self.parent.width, 300)
         TextInput:
             id: output
             readonly: True
+            pos: self.pos
+            size: self.size
+        BoxLayout:
         BoxLayout:
             size: (self.parent.width, 100)
             orientation: 'horizontal'
@@ -82,6 +97,8 @@
         BoxLayout:
             size: (self.parent.width, 70)
             orientation: 'horizontal'
+            ColoredBox:
+                size_hint: [.25, 1]
             ColoredLabel:
                 text: "A"
                 id: output_a
@@ -109,3 +126,31 @@
             ColoredLabel:
                 text: "L"
                 id: output_l
+            ColoredBox:
+                size_hint: [.75, 1]
+        BoxLayout:
+            ColoredBox:
+                size_hint: [.5, 1]
+            ColoredLabel:
+                text: "Z"
+                id: output_z
+            ColoredLabel:
+                text: "X"
+                id: output_x
+            ColoredLabel:
+                text: "C"
+                id: output_c
+            ColoredLabel:
+                text: "V"
+                id: output_v
+            ColoredLabel:
+                text: "B"
+                id: output_b
+            ColoredLabel:
+                text: "N"
+                id: output_n
+            ColoredLabel:
+                text: "M"
+                id: output_m
+            ColoredBox:
+                size_hint: [2, 1]

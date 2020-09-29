@@ -35,7 +35,13 @@ class ColoredLabel(Label):
     size = (50, 50)
 
 
+class ColoredBox(Label):
+    background_color = ListProperty((0, 0, 0, 1))
+    pass
+
+
 class EnigmaUI(Widget):
+    output = ObjectProperty(None)
     output_a = ObjectProperty(None)
     output_b = ObjectProperty(None)
     output_c = ObjectProperty(None)
@@ -66,12 +72,34 @@ class EnigmaUI(Widget):
     def key_action(self, *args):
         # print(f"got a key event: {list(args)}")
         k = list(args)[-2].upper()
+        self.output.text += k
         try:
             getattr(self, f"output_{k.lower()}").background_color = (1, 1, 1, 1)
             getattr(self, f"output_{k.lower()}").color = (0, 0, 0)
             # print(getattr(self, f"output_{k.lower()}").size)
         except AttributeError:
             pass
+
+    def key_up(self, *args):
+        # prin/(f"got a key event: {self.keycode_to_string(value=list(args)[1])}")
+        sleep(0.5)
+        k = self.keycode_to_string(value=list(args)[1]).upper()
+        try:
+            getattr(self, f"output_{k.lower()}").background_color = (0, 0, 0, 1)
+            getattr(self, f"output_{k.lower()}").color = (1, 1, 1)
+            # print(getattr(self, f"output_{k.lower()}").size)
+        except AttributeError:
+            pass
+
+    def keycode_to_string(self, value):
+        '''Convert a keycode number to a string according to the
+        :attr:`Keyboard.keycodes`. If the value is not found in the
+        keycodes, it will return ''.
+        '''
+        keycodes = list(Keyboard.keycodes.values())
+        if value in keycodes:
+            return list(Keyboard.keycodes.keys())[keycodes.index(value)]
+        return ''
 
 class EnigmaApp(App):
 
@@ -142,6 +170,7 @@ class EnigmaApp(App):
     def build(self):
         lkasjdf = EnigmaUI()
         Window.bind(on_key_down=lkasjdf.key_action)
+        Window.bind(on_key_up=lkasjdf.key_up)
         return lkasjdf
         # Window.bind(on_key_down=self.key_action)
         # Window.bind(on_key_up=self.key_up)
