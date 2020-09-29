@@ -68,14 +68,17 @@ class EnigmaUI(Widget):
     output_x = ObjectProperty(None)
     output_y = ObjectProperty(None)
     output_z = ObjectProperty(None)
+    e = Enimga()
 
     def key_action(self, *args):
         # print(f"got a key event: {list(args)}")
         k = list(args)[-2].upper()
-        self.output.text += k
+        if k.lower() not in self.e.ALPHA: return
+        self.output_letter = self.e.encrypt(k.lower()).strip()
+        self.output.text += self.output_letter.upper()
         try:
-            getattr(self, f"output_{k.lower()}").background_color = (1, 1, 1, 1)
-            getattr(self, f"output_{k.lower()}").color = (0, 0, 0)
+            getattr(self, f"output_{self.output_letter.lower()}").background_color = (1, 1, 1, 1)
+            getattr(self, f"output_{self.output_letter.lower()}").color = (0, 0, 0)
             # print(getattr(self, f"output_{k.lower()}").size)
         except AttributeError:
             pass
@@ -83,10 +86,10 @@ class EnigmaUI(Widget):
     def key_up(self, *args):
         # prin/(f"got a key event: {self.keycode_to_string(value=list(args)[1])}")
         sleep(0.5)
-        k = self.keycode_to_string(value=list(args)[1]).upper()
+        # k = self.keycode_to_string(value=list(args)[1]).upper()
         try:
-            getattr(self, f"output_{k.lower()}").background_color = (0, 0, 0, 1)
-            getattr(self, f"output_{k.lower()}").color = (1, 1, 1)
+            getattr(self, f"output_{self.output_letter.lower()}").background_color = (0, 0, 0, 1)
+            getattr(self, f"output_{self.output_letter.lower()}").color = (1, 1, 1)
             # print(getattr(self, f"output_{k.lower()}").size)
         except AttributeError:
             pass
