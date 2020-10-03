@@ -133,6 +133,10 @@ class Enimga:
             encrypted_text.append(' ')
         return ''.join(encrypted_text)
 
+    def get_roter_status(self):
+        return (self.ALPHA[(self.right_roter['rotations'] - self.right_roter['ringsetting']) % 26],
+                self.ALPHA[(self.center_roter['rotations'] - self.center_roter['ringsetting']) % 26],
+                self.ALPHA[(self.left_roter['rotations'] - self.left_roter['ringsetting']) % 26])
 
 # TODO start building UI
 # TODO steckerbrett

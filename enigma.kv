@@ -21,6 +21,9 @@
             size: self.size
 
 <EnigmaUI>:
+    right_roter: right_roter
+    center_roter: center_roter
+    left_roter: left_roter
     output: output
     output_a: output_a
     output_b: output_b
@@ -52,6 +55,17 @@
     BoxLayout:
         orientation: 'vertical'
         size: (self.parent.width, self.parent.height)
+        BoxLayout:
+            orientation: 'horizontal'
+            Label:
+                text: 'A'
+                id: left_roter
+            Label:
+                text: 'A'
+                id: center_roter
+            Label:
+                text: 'A'
+                id: right_roter
         BoxLayout:
             orientation: 'vertical'
             size: (self.parent.width, 300)

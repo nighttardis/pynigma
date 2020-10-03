@@ -12,6 +12,7 @@ from enimga import Enimga
 from kivy.properties import (
     NumericProperty, ReferenceListProperty, ObjectProperty, Property
 )
+from kivy.core.audio import SoundLoader
 
 #https://stackoverflow.com/questions/57118705/kivy-define-background-color-of-label
 
@@ -68,7 +69,11 @@ class EnigmaUI(Widget):
     output_x = ObjectProperty(None)
     output_y = ObjectProperty(None)
     output_z = ObjectProperty(None)
+    left_roter = ObjectProperty(None)
+    center_roter = ObjectProperty(None)
+    right_roter = ObjectProperty(None)
     e = Enimga()
+    keysound = SoundLoader.load('data/keyboard.mp3')
 
     def key_action(self, *args):
         # print(f"got a key event: {list(args)}")
@@ -76,12 +81,25 @@ class EnigmaUI(Widget):
         if k.lower() not in self.e.ALPHA: return
         self.output_letter = self.e.encrypt(k.lower()).strip()
         self.output.text += self.output_letter.upper()
+        if self.keysound:
+            self.keysound.seek(0)
+            self.keysound.play()
         try:
             getattr(self, f"output_{self.output_letter.lower()}").background_color = (1, 1, 1, 1)
             getattr(self, f"output_{self.output_letter.lower()}").color = (0, 0, 0)
             # print(getattr(self, f"output_{k.lower()}").size)
         except AttributeError:
             pass
+        self.update_roter_dispaly()
+
+    def update_roter_dispaly(self):
+        data = self.e.get_roter_status()
+        if data[0].upper() != self.right_roter.text:
+            self.right_roter.text = data[0].upper()
+        if data[1].upper() != self.center_roter.text:
+            self.center_roter.text = data[1].upper()
+        if data[0].upper() != self.left_roter.text:
+            self.left_roter.text = data[2].upper()
 
     def key_up(self, *args):
         # prin/(f"got a key event: {self.keycode_to_string(value=list(args)[1])}")
