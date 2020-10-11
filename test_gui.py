@@ -2,7 +2,9 @@ from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.core.window import Window, Keyboard
 from kivy.uix.label import Label
-from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.button import Button
+from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
 from kivy.graphics import Color, Rectangle
 from kivy.lang import Builder
@@ -40,6 +42,17 @@ class ColoredBox(Label):
     background_color = ListProperty((0, 0, 0, 1))
     pass
 
+class EnigmaSettings(Widget):
+    left_roter_setting = ObjectProperty(None)
+    center_roter_setting = ObjectProperty(None)
+    right_roter_setting = ObjectProperty(None)
+    left_roter_start = ObjectProperty(None)
+    center_roter_start = ObjectProperty(None)
+    right_roter_start = ObjectProperty(None)
+    left_roter_position = ObjectProperty(None)
+    center_roter_position = ObjectProperty(None)
+    right_roter_position = ObjectProperty(None)
+    pass
 
 class EnigmaUI(Widget):
     output = ObjectProperty(None)
@@ -72,8 +85,13 @@ class EnigmaUI(Widget):
     left_roter = ObjectProperty(None)
     center_roter = ObjectProperty(None)
     right_roter = ObjectProperty(None)
-    e = Enimga()
+
+    e = Enimga(rightstart='b')
     keysound = SoundLoader.load('data/keyboard.mp3')
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.update_roter_dispaly()
 
     def key_action(self, *args):
         # print(f"got a key event: {list(args)}")
@@ -122,71 +140,69 @@ class EnigmaUI(Widget):
             return list(Keyboard.keycodes.keys())[keycodes.index(value)]
         return ''
 
+    def settings(self):
+        self.box = EnigmaSettings()
+
+        right, center, left = self.e.get_roter_settings()
+
+        # Setting up valid values
+        self.box.right_roter_setting.values = self.e.get_valid_roters()
+        self.box.center_roter_setting.values = self.e.get_valid_roters()
+        self.box.left_roter_setting.values = self.e.get_valid_roters()
+
+        self.box.right_roter_start.values = self.e.ALPHA
+        self.box.right_roter_position.values = self.e.ALPHA
+
+        self.box.center_roter_start.values = self.e.ALPHA
+        self.box.center_roter_position.values = self.e.ALPHA
+
+        self.box.left_roter_start.values = self.e.ALPHA
+        self.box.left_roter_position.values = self.e.ALPHA
+
+        # Set Current Values
+        self.box.right_roter_setting.text = right[0]
+        self.box.right_roter_start.text = right[1]
+        self.box.right_roter_position.text = right[2]
+
+        self.box.center_roter_setting.text = center[0]
+        self.box.center_roter_start.text = center[1]
+        self.box.center_roter_position.text = center[2]
+
+        self.box.left_roter_setting.text = left[0]
+        self.box.left_roter_start.text = left[1]
+        self.box.left_roter_position.text = left[2]
+
+        but = (Button(text="close", size_hint=(None, None),
+                      width=200, height=50, pos_hint={'x': 0, 'y': 0}))
+        self.box.add_widget(but)
+        self.main_popup = Popup(content=self.box, auto_dismiss=False)
+        but.bind(on_press=self.pop_close)
+        self.main_popup.open()
+
+    def pop_close(self, btn):
+        right, center, left = self.e.get_roter_settings()
+        right_change = not (self.box.right_roter_setting.text, self.box.right_roter_start.text,
+                            self.box.right_roter_position.text) == right
+        center_change = not (self.box.center_roter_setting.text, self.box.center_roter_start.text,
+                             self.box.center_roter_position.text) == center
+        left_change = not (self.box.right_roter_setting.text, self.box.left_roter_start.text,
+                           self.box.left_roter_position.text) == left
+        if right_change or center_change or left_change:
+            self.output = ""
+            self.e = Enimga(left=self.box.left_roter_setting.text, leftstart=self.box.left_roter_start.text,
+                            leftringsetting=self.box.left_roter_position.text,
+                            center=self.box.center_roter_setting.text, centerstart=self.box.center_roter_start.text,
+                            centerringsetting=self.box.center_roter_position.text,
+                            right=self.box.right_roter_setting.text, rightstart=self.box.right_roter_start.text,
+                            rightringsetting=self.box.right_roter_position.text)
+            self.update_roter_dispaly()
+        self.main_popup.dismiss()
+
 class EnigmaApp(App):
 
     KEYS_COLOR = (1, 0, 0, 1)
 
-    # KEYS = {
-    #     "A": ColoredLabel(text="A", background_color=KEYS_COLOR),
-    #     "B": ColoredLabel(text="B", background_color=KEYS_COLOR),
-    #     "C": ColoredLabel(text="C", background_color=KEYS_COLOR),
-    #     "D": ColoredLabel(text="D", background_color=KEYS_COLOR),
-    #     "E": ColoredLabel(text="E", background_color=KEYS_COLOR),
-    #     "F": ColoredLabel(text="F", background_color=KEYS_COLOR),
-    #     "G": ColoredLabel(text="G", background_color=KEYS_COLOR),
-    #     "H": ColoredLabel(text="H", background_color=KEYS_COLOR),
-    #     "I": ColoredLabel(text="I", background_color=KEYS_COLOR),
-    #     "J": ColoredLabel(text="J", background_color=KEYS_COLOR),
-    #     "K": ColoredLabel(text="K", background_color=KEYS_COLOR),
-    #     "L": ColoredLabel(text="L", background_color=KEYS_COLOR),
-    #     "M": ColoredLabel(text="M", background_color=KEYS_COLOR),
-    #     "N": ColoredLabel(text="N", background_color=KEYS_COLOR),
-    #     "O": ColoredLabel(text="O", background_color=KEYS_COLOR),
-    #     "P": ColoredLabel(text="P", background_color=KEYS_COLOR),
-    #     "Q": ColoredLabel(text="Q", background_color=KEYS_COLOR),
-    #     "R": ColoredLabel(text="R", background_color=KEYS_COLOR),
-    #     "S": ColoredLabel(text="S", background_color=KEYS_COLOR),
-    #     "T": ColoredLabel(text="T", background_color=KEYS_COLOR),
-    #     "U": ColoredLabel(text="U", background_color=KEYS_COLOR),
-    #     "V": ColoredLabel(text="V", background_color=KEYS_COLOR),
-    #     "W": ColoredLabel(text="W", background_color=KEYS_COLOR),
-    #     "X": ColoredLabel(text="X", background_color=KEYS_COLOR),
-    #     "Y": ColoredLabel(text="Y", background_color=KEYS_COLOR),
-    #     "Z": ColoredLabel(text="Z", background_color=KEYS_COLOR)
-    # }
-
     OUTPUT_COLORS = (0, 0, 0, 0)
-
-    # OUTPUT = {
-    #     "A": ColoredLabel(text="A", background_color=OUTPUT_COLORS),
-    #     "B": ColoredLabel(text="B", background_color=OUTPUT_COLORS),
-    #     "C": ColoredLabel(text="C", background_color=OUTPUT_COLORS),
-    #     "D": ColoredLabel(text="D", background_color=OUTPUT_COLORS),
-    #     "E": ColoredLabel(text="E", background_color=OUTPUT_COLORS),
-    #     "F": ColoredLabel(text="F", background_color=OUTPUT_COLORS),
-    #     "G": ColoredLabel(text="G", background_color=OUTPUT_COLORS),
-    #     "H": ColoredLabel(text="H", background_color=OUTPUT_COLORS),
-    #     "I": ColoredLabel(text="I", background_color=OUTPUT_COLORS),
-    #     "J": ColoredLabel(text="J", background_color=OUTPUT_COLORS),
-    #     "K": ColoredLabel(text="K", background_color=OUTPUT_COLORS),
-    #     "L": ColoredLabel(text="L", background_color=OUTPUT_COLORS),
-    #     "M": ColoredLabel(text="M", background_color=OUTPUT_COLORS),
-    #     "N": ColoredLabel(text="N", background_color=OUTPUT_COLORS),
-    #     "O": ColoredLabel(text="O", background_color=OUTPUT_COLORS),
-    #     "P": ColoredLabel(text="P", background_color=OUTPUT_COLORS),
-    #     "Q": ColoredLabel(text="Q", background_color=OUTPUT_COLORS),
-    #     "R": ColoredLabel(text="R", background_color=OUTPUT_COLORS),
-    #     "S": ColoredLabel(text="S", background_color=OUTPUT_COLORS),
-    #     "T": ColoredLabel(text="T", background_color=OUTPUT_COLORS),
-    #     "U": ColoredLabel(text="U", background_color=OUTPUT_COLORS),
-    #     "V": ColoredLabel(text="V", background_color=OUTPUT_COLORS),
-    #     "W": ColoredLabel(text="W", background_color=OUTPUT_COLORS),
-    #     "X": ColoredLabel(text="X", background_color=OUTPUT_COLORS),
-    #     "Y": ColoredLabel(text="Y", background_color=OUTPUT_COLORS),
-    #     "Z": ColoredLabel(text="Z", background_color=OUTPUT_COLORS)
-    # }
-
-    e = Enimga()
 
     def build(self):
         lkasjdf = EnigmaUI()

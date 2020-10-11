@@ -80,20 +80,20 @@ class Enimga:
 
         self.right_roter = {"letters": [letter.lower() for letter in self.ROTERS[right]['letters']],
                             "rotations": self.ALPHA.index(rightstart), "rotate": self.ROTERS[right]['rotate'].lower(),
-                            "ringsetting": self.ALPHA.index(rightringsetting)}
+                            "ringsetting": self.ALPHA.index(rightringsetting), "roter": right, "start": rightstart}
         self.right_roter['rletters'] = [k for k, v in sorted(dict(zip(self.ALPHA, self.right_roter['letters'])).items(),
                                                              key=lambda item: item[1])]
 
         self.center_roter = {"letters": [letter.lower() for letter in self.ROTERS[center]['letters']],
                              "rotations": self.ALPHA.index(centerstart), "rotate": self.ROTERS[center]['rotate'].lower(),
-                             "ringsetting": self.ALPHA.index(centerringsetting)}
+                             "ringsetting": self.ALPHA.index(centerringsetting), "roter": center, "start": centerstart}
         self.center_roter['rletters'] = [k for k, v in
                                          sorted(dict(zip(self.ALPHA, self.center_roter['letters'])).items(),
                                                 key=lambda item: item[1])]
 
         self.left_roter = {"letters": [letter.lower() for letter in self.ROTERS[left]['letters']],
                            "rotations": self.ALPHA.index(leftstart), "rotate": self.ROTERS[left]['rotate'].lower(),
-                           "ringsetting": self.ALPHA.index(leftringsetting)}
+                           "ringsetting": self.ALPHA.index(leftringsetting), "roter": left, "start": leftstart}
         self.left_roter['rletters'] = [k for k, v in sorted(dict(zip(self.ALPHA, self.left_roter['letters'])).items(),
                                                             key=lambda item: item[1])]
 
@@ -137,6 +137,15 @@ class Enimga:
         return (self.ALPHA[(self.right_roter['rotations'] - self.right_roter['ringsetting']) % 26],
                 self.ALPHA[(self.center_roter['rotations'] - self.center_roter['ringsetting']) % 26],
                 self.ALPHA[(self.left_roter['rotations'] - self.left_roter['ringsetting']) % 26])
+
+    def get_roter_settings(self):
+        return ((self.right_roter['roter'], self.right_roter['start'], self.ALPHA[self.right_roter['ringsetting']]),
+                (self.center_roter['roter'], self.center_roter['start'], self.ALPHA[self.center_roter['ringsetting']]),
+                (self.left_roter['roter'], self.left_roter['start'], self.ALPHA[self.left_roter['ringsetting']]))
+
+    def get_valid_roters(self):
+        return self.ROTERS.keys()
+
 
 # TODO start building UI
 # TODO steckerbrett
