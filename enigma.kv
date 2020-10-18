@@ -20,6 +20,226 @@
             pos: self.pos
             size: self.size
 
+<SteckerbrettSettings>:
+    steckerbrett_a: steckerbrett_a
+    steckerbrett_b: steckerbrett_b
+    steckerbrett_c: steckerbrett_c
+    steckerbrett_d: steckerbrett_d
+    steckerbrett_e: steckerbrett_e
+    steckerbrett_f: steckerbrett_f
+    steckerbrett_g: steckerbrett_g
+    steckerbrett_h: steckerbrett_h
+    steckerbrett_i: steckerbrett_i
+    steckerbrett_j: steckerbrett_j
+    steckerbrett_k: steckerbrett_k
+    steckerbrett_l: steckerbrett_l
+    steckerbrett_m: steckerbrett_m
+    steckerbrett_n: steckerbrett_n
+    steckerbrett_o: steckerbrett_o
+    steckerbrett_p: steckerbrett_p
+    steckerbrett_q: steckerbrett_q
+    steckerbrett_r: steckerbrett_r
+    steckerbrett_s: steckerbrett_s
+    steckerbrett_t: steckerbrett_t
+    steckerbrett_u: steckerbrett_u
+    steckerbrett_v: steckerbrett_v
+    steckerbrett_w: steckerbrett_w
+    steckerbrett_x: steckerbrett_x
+    steckerbrett_y: steckerbrett_y
+    steckerbrett_z: steckerbrett_z
+
+    BoxLayout:
+        size: (self.parent.width, self.parent.height)
+        orientation: 'vertical'
+        BoxLayout:
+            GridLayout:
+                cols: 2
+                Label:
+                    text: 'q'
+                Spinner:
+                    id: steckerbrett_q
+                    on_text: root.update(self.text, self)
+            GridLayout:
+                cols: 2
+                Label:
+                    text: 'w'
+                Spinner:
+                    id: steckerbrett_w
+                    on_text: root.update(self.text, self)
+            GridLayout:
+                cols: 2
+                Label:
+                    text: 'e'
+                Spinner:
+                    id: steckerbrett_e
+                    on_text: root.update(self.text, self)
+            GridLayout:
+                cols: 2
+                Label:
+                    text: 'r'
+                Spinner:
+                    id: steckerbrett_r
+                    on_text: root.update(self.text, self)
+            GridLayout:
+                cols: 2
+                Label:
+                    text: 't'
+                Spinner:
+                    id: steckerbrett_t
+                    on_text: root.update(self.text, self)
+            GridLayout:
+                cols: 2
+                Label:
+                    text: 'y'
+                Spinner:
+                    id: steckerbrett_y
+                    on_text: root.update(self.text, self)
+            GridLayout:
+                cols: 2
+                Label:
+                    text: 'u'
+                Spinner:
+                    id: steckerbrett_u
+                    on_text: root.update(self.text, self)
+            GridLayout:
+                cols: 2
+                Label:
+                    text: 'i'
+                Spinner:
+                    id: steckerbrett_i
+                    on_text: root.update(self.text, self)
+            GridLayout:
+                cols: 2
+                Label:
+                    text: 'o'
+                Spinner:
+                    id: steckerbrett_o
+                    on_text: root.update(self.text, self)
+            GridLayout:
+                cols: 2
+                Label:
+                    text: 'p'
+                Spinner:
+                    id: steckerbrett_p
+                    on_text: root.update(self.text, self)
+        BoxLayout:
+            GridLayout:
+                cols: 2
+                Label:
+                    text: 'a'
+                Spinner:
+                    id: steckerbrett_a
+                    on_text: root.update(self.text, self)
+            GridLayout:
+                cols: 2
+                Label:
+                    text: 's'
+                Spinner:
+                    id: steckerbrett_s
+                    on_text: root.update(self.text, self)
+            GridLayout:
+                cols: 2
+                Label:
+                    text: 'd'
+                Spinner:
+                    id: steckerbrett_d
+                    on_text: root.update(self.text, self)
+            GridLayout:
+                cols: 2
+                Label:
+                    text: 'f'
+                Spinner:
+                    id: steckerbrett_f
+                    on_text: root.update(self.text, self)
+            GridLayout:
+                cols: 2
+                Label:
+                    text: 'g'
+                Spinner:
+                    id: steckerbrett_g
+                    on_text: root.update(self.text, self)
+            GridLayout:
+                cols: 2
+                Label:
+                    text: 'h'
+                Spinner:
+                    id: steckerbrett_h
+                    on_text: root.update(self.text, self)
+            GridLayout:
+                cols: 2
+                Label:
+                    text: 'j'
+                Spinner:
+                    id: steckerbrett_j
+                    on_text: root.update(self.text, self)
+            GridLayout:
+                cols: 2
+                Label:
+                    text: 'k'
+                Spinner:
+                    id: steckerbrett_k
+                    on_text: root.update(self.text, self)
+            GridLayout:
+                cols: 2
+                Label:
+                    text: 'l'
+                Spinner:
+                    id: steckerbrett_l
+                    on_text: root.update(self.text, self)
+        BoxLayout:
+            GridLayout:
+                cols: 2
+                Label:
+                    text: 'z'
+                Spinner:
+                    id: steckerbrett_z
+                    on_text: root.update(self.text, self)
+            GridLayout:
+                cols: 2
+                Label:
+                    text: 'x'
+                Spinner:
+                    id: steckerbrett_x
+                    on_text: root.update(self.text, self)
+            GridLayout:
+                cols: 2
+                Label:
+                    text: 'c'
+                Spinner:
+                    id: steckerbrett_c
+                    on_text: root.update(self.text, self)
+            GridLayout:
+                cols: 2
+                Label:
+                    text: 'v'
+                Spinner:
+                    id: steckerbrett_v
+                    on_text: root.update(self.text, self)
+            GridLayout:
+                cols: 2
+                Label:
+                    text: 'b'
+                Spinner:
+                    id: steckerbrett_b
+                    on_text: root.update(self.text, self)
+            GridLayout:
+                cols: 2
+                Label:
+                    text: 'n'
+                Spinner:
+                    id: steckerbrett_n
+                    on_text: root.update(self.text, self)
+            GridLayout:
+                cols: 2
+                Label:
+                    text: 'm'
+                Spinner:
+                    id: steckerbrett_m
+                    on_text: root.update(self.text, self)
+        Button:
+            text: 'close'
+            on_press: app.close_steckerbrett()
+
 <EnigmaSettings>:
     left_roter_setting: left_roter_setting
     center_roter_setting: center_roter_setting
@@ -84,6 +304,13 @@
             Spinner:
                 text: 'A'
                 id: right_roter_position
+    Button:
+        text: 'close'
+        size_hint: (None, None)
+        width: 200
+        height: 50
+        pos_hint: {'x': 0, 'y': 0}
+        on_press: app.close_enigma_settings()
 
 
 <EnigmaUI>:
@@ -128,6 +355,9 @@
                 ActionButton:
                     text: 'Settings'
                     on_press: root.settings()
+                ActionButton:
+                    text: 'Steckerbrett'
+                    on_press: root.steckerbrett()
         BoxLayout:
             orientation: 'horizontal'
             Label:

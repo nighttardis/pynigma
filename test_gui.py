@@ -42,6 +42,7 @@ class ColoredBox(Label):
     background_color = ListProperty((0, 0, 0, 1))
     pass
 
+
 class EnigmaSettings(Widget):
     left_roter_setting = ObjectProperty(None)
     center_roter_setting = ObjectProperty(None)
@@ -53,6 +54,26 @@ class EnigmaSettings(Widget):
     center_roter_position = ObjectProperty(None)
     right_roter_position = ObjectProperty(None)
     pass
+
+
+class SteckerbrettSettings(Widget):
+    steckerbrett_q = ObjectProperty(None)
+    steckerbrett_w = ObjectProperty(None)
+
+    # TODO 'Fix' changing an already changed letter
+    def update(self, text, instance):
+        for wid, widget in self.ids.items():
+            if widget.__self__ == instance:
+                break
+        getattr(self, f"steckerbrett_{text}").text = wid.split('_')[-1]
+
+
+    def setup_values(self, alpha):
+        for id, widget in self.ids.items():
+            if id.endswith("label"): continue
+            widget.values = alpha
+            widget.text = id.split('_')[-1]
+
 
 class EnigmaUI(Widget):
     output = ObjectProperty(None)
@@ -91,7 +112,16 @@ class EnigmaUI(Widget):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.__key_bind()
         self.update_roter_dispaly()
+
+    def __key_bind(self):
+        Window.bind(on_key_down=self.key_action)
+        Window.bind(on_key_up=self.key_up)
+
+    def __key_unbind(self):
+        Window.unbind(on_key_down=self.key_action)
+        Window.unbind(on_key_up=self.key_up)
 
     def key_action(self, *args):
         # print(f"got a key event: {list(args)}")
@@ -141,6 +171,7 @@ class EnigmaUI(Widget):
         return ''
 
     def settings(self):
+        self.__key_unbind()
         self.box = EnigmaSettings()
 
         right, center, left = self.e.get_roter_settings()
@@ -172,11 +203,11 @@ class EnigmaUI(Widget):
         self.box.left_roter_start.text = left[1]
         self.box.left_roter_position.text = left[2]
 
-        but = (Button(text="close", size_hint=(None, None),
-                      width=200, height=50, pos_hint={'x': 0, 'y': 0}))
-        self.box.add_widget(but)
+        # but = (Button(text="close", size_hint=(None, None),
+        #               width=200, height=50, pos_hint={'x': 0, 'y': 0}))
+        # self.box.add_widget(but)
         self.main_popup = Popup(content=self.box, auto_dismiss=False)
-        but.bind(on_press=self.pop_close)
+        # but.bind(on_press=self.pop_close)
         self.main_popup.open()
 
     def pop_close(self, btn):
@@ -196,6 +227,18 @@ class EnigmaUI(Widget):
                             right=self.box.right_roter_setting.text, rightstart=self.box.right_roter_start.text,
                             rightringsetting=self.box.right_roter_position.text)
             self.update_roter_dispaly()
+        self.__key_bind()
+        self.main_popup.dismiss()
+
+    def steckerbrett(self):
+        self.__key_unbind()
+        self.steckerbrett_box = SteckerbrettSettings()
+        self.steckerbrett_box.setup_values(self.e.ALPHA)
+        self.main_popup = Popup(content=self.steckerbrett_box, auto_dismiss=False)
+        self.main_popup.open()
+
+    def steckerbrett_close(self):
+        self.__key_bind()
         self.main_popup.dismiss()
 
 class EnigmaApp(App):
@@ -205,10 +248,10 @@ class EnigmaApp(App):
     OUTPUT_COLORS = (0, 0, 0, 0)
 
     def build(self):
-        lkasjdf = EnigmaUI()
-        Window.bind(on_key_down=lkasjdf.key_action)
-        Window.bind(on_key_up=lkasjdf.key_up)
-        return lkasjdf
+        self.lkasjdf = EnigmaUI()
+        # Window.bind(on_key_down=lkasjdf.key_action)
+        # Window.bind(on_key_up=lkasjdf.key_up)
+        return self.lkasjdf
         # Window.bind(on_key_down=self.key_action)
         # Window.bind(on_key_up=self.key_up)
         # root = BoxLayout(orientation='vertical')
@@ -287,5 +330,11 @@ class EnigmaApp(App):
         if value in keycodes:
             return list(Keyboard.keycodes.keys())[keycodes.index(value)]
         return ''
+
+    def close_steckerbrett(self):
+        self.lkasjdf.steckerbrett_close()
+
+    def close_enigma_settings(self):
+        self.lkasjdf.pop_close(None)
 
 EnigmaApp().run()
