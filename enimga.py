@@ -54,8 +54,11 @@ class Enimga:
     def __init__(self, left='I', leftstart='a', leftringsetting='a',
                  center='II', centerstart='a', centerringsetting='a',
                  right='III', rightstart='a', rightringsetting='a',
-                 reflector='B'):
-        self.steckerbrett = dict()
+                 reflector='B', steckerbrett: dict = None):
+
+        self.steckerbrett = {k: k for k in self.ALPHA}
+        if steckerbrett is not None:
+            self.__validate_steckerbrett(steckerbrett=steckerbrett)
 
         if left not in self.ROTERS:
             raise ValueError('left Roter is invalid')
@@ -99,6 +102,21 @@ class Enimga:
 
         self.reflector = [letter.lower() for letter in self.REFLECTORS[reflector]]
 
+    def __validate_steckerbrett(self, steckerbrett: dict):
+        alpha_set = set(self.ALPHA)
+        steckerbrett_key_set = set(k.lower() for k in steckerbrett.keys())
+        steckerbrett_value_set = set(k.lower() for k in steckerbrett.values())
+        if not steckerbrett_key_set.issubset(alpha_set):
+            raise ValueError(f"Steckerbrett keys incorrect unknown {steckerbrett_key_set - alpha_set}")
+        if not steckerbrett_value_set.issubset(alpha_set):
+            raise ValueError(f"Steckerbrett values incorrect unknown {steckerbrett_value_set - alpha_set}")
+        for k, v in steckerbrett.items():
+            if k in steckerbrett_value_set:
+                raise ValueError(f"Steckerbrett key also in values {k}, this isn't allowed")
+            self.steckerbrett[k] = v
+            self.steckerbrett[v] = k
+
+
     def update_roters(self):
         if self.ALPHA[self.center_roter['rotations'] % 26] == self.center_roter['rotate']:
             self.left_roter['rotations'] += 1
@@ -122,6 +140,7 @@ class Enimga:
         for letter in message.split():
             for letter1 in letter.lower():
                 self.update_roters()
+                letter1 = self.steckerbrett[letter1]
                 encrypted_letter = self.rotate(roter=self.right_roter, letter=letter1)
                 encrypted_letter = self.rotate(roter=self.center_roter, letter=encrypted_letter)
                 encrypted_letter = self.rotate(roter=self.left_roter, letter=encrypted_letter)
@@ -129,6 +148,7 @@ class Enimga:
                 encrypted_letter = self.rerotate(roter=self.left_roter, letter=encrypted_letter)
                 encrypted_letter = self.rerotate(roter=self.center_roter, letter=encrypted_letter)
                 encrypted_letter = self.rerotate(roter=self.right_roter, letter=encrypted_letter)
+                encrypted_letter = self.steckerbrett[encrypted_letter]
                 encrypted_text.append(encrypted_letter)
             encrypted_text.append(' ')
         return ''.join(encrypted_text)
@@ -147,8 +167,6 @@ class Enimga:
         return self.ROTERS.keys()
 
 
-# TODO start building UI
-# TODO steckerbrett
 if __name__ == "__main__":
     a = Enimga()
     #A = a.encrypt("hello welcome to the world")
