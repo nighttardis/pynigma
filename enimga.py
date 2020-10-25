@@ -6,7 +6,28 @@ class Enimga:
     ROTERS = {
         'I':   {'letters': 'EKMFLGDQVZNTOWYHXUSPAIBRCJ', 'rotate': 'Q'},
         'II':  {'letters': 'AJDKSIRUXBLHWTMCQGZNPYFVOE', 'rotate': 'E'},
-        'III': {'letters': 'BDFHJLCPRTXVZNYEIWGAKMUSQO', 'rotate': 'V'}
+        'III': {'letters': 'BDFHJLCPRTXVZNYEIWGAKMUSQO', 'rotate': 'V'},
+        'IV': {'letters': 'ESOVPZJAYQUIRHXLNFTGKDCMWB', 'rotate': 'J'},
+        'V': {'letters': 'VZBRGITYUPSDNHLXAWMJQOFECK', 'rotate': 'Z'},
+        'VI': {'letters': 'JPGVOUMFYQBENHZRDKASXLICTW', 'rotate': 'Z+M'},
+        'VII': {'letters': 'NZJHGRCXMYSWBOUFAIVLPEKQDT', 'rotate': 'Z+M'},
+        'VIII': {'letters': 'FKQHTLXOCBJSPDZRAMEWNIUYGV', 'rotate': 'Z+M'},
+        'IC': {'letters': 'DMTWSILRUYQNKFEJCAZBPGXOHV', 'rotate': 'Q'},
+        'IIC': {'letters': 'HQZGPJTMOBLNCIFDYAWVEUSRKX', 'rotate': 'E'},
+        'IIIC': {'letters': 'UQNTLSZFMREHDPXKIBVYGJCWOA', 'rotate': 'V'},
+        'RKT-I': {'letters': 'JGDQOXUSCAMIFRVTPNEWKBLZYH', 'rotate': 'Q'},
+        'RKT-II': {'letters': 'NTZPSFBOKMWRCJDIVLAEYUXHGQ', 'rotate': 'E'},
+        'RKT-III': {'letters': 'JVIUBHTCDYAKEQZPOSGXNRMWFL', 'rotate': 'V'},
+        'RKT-UKW': {'letters': 'QYHOGNECVPUZTFDJAXWMKISRBL', 'rotate': 'Z'},
+        'RKT-ETW': {'letters': 'QWERTZUIOASDFGHJKPYXCVBNML', 'rotate': 'Z'},
+        'I-K': {'letters': 'PEZUOHXSCVFMTBGLRINQJWAYDK', 'rotate': 'Q'},
+        'II-K': {'letters': 'ZOUESYDKFWPCIQXHMVBLGNJRAT', 'rotate': 'E'},
+        'III-K': {'letters': 'EHRVXGAOBQUSIMZFLYNWKTPDJC', 'rotate': 'V'},
+        'UKW-K': {'letters': 'IMETCGFRAYSQBZXWLHKDVUPOJN', 'rotate': 'Z'},
+        'ETW-K': {'letters': 'QWERTZUIOASDFGHJKPYXCVBNML', 'rotate': 'Z'},
+        'BETA': {'letters': 'LEYJVCNIXWPBQMDRTAKZGFUHOS', 'rotate': 'Z'},
+        'GAMMA': {'letters': 'FSOKANUERHMBTIYCWLQPZXVGJD', 'rotate': 'Z'},
+        'ETW': {'letters': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'rotate': 'Z'}
     }
 
     REFLECTORS = {
@@ -19,38 +40,6 @@ class Enimga:
 
     ALPHA = list(ascii_lowercase)
 
-    # ROTERS = {
-    #     'IC': 'DMTWSILRUYQNKFEJCAZBPGXOHV',
-    #     'IIC': 'HQZGPJTMOBLNCIFDYAWVEUSRKX',
-    #     'IIIC': 'UQNTLSZFMREHDPXKIBVYGJCWOA',
-    #     'RKT-I': 'JGDQOXUSCAMIFRVTPNEWKBLZYH',
-    #     'RKT-II': 'NTZPSFBOKMWRCJDIVLAEYUXHGQ',
-    #     'RKT-III': 'JVIUBHTCDYAKEQZPOSGXNRMWFL',
-    #     'RKT-UKW': 'QYHOGNECVPUZTFDJAXWMKISRBL',
-    #     'RKT-ETW': 'QWERTZUIOASDFGHJKPYXCVBNML',
-    #     'I-K': 'PEZUOHXSCVFMTBGLRINQJWAYDK',
-    #     'II-K': 'ZOUESYDKFWPCIQXHMVBLGNJRAT',
-    #     'III-K': 'EHRVXGAOBQUSIMZFLYNWKTPDJC',
-    #     'UKW-K': 'IMETCGFRAYSQBZXWLHKDVUPOJN',
-    #     'ETW-K': 'QWERTZUIOASDFGHJKPYXCVBNML',
-    #     'I': 'EKMFLGDQVZNTOWYHXUSPAIBRCJ',
-    #     'II': 'AJDKSIRUXBLHWTMCQGZNPYFVOE',
-    #     'III': 'BDFHJLCPRTXVZNYEIWGAKMUSQO',
-    #     'IV': 'ESOVPZJAYQUIRHXLNFTGKDCMWB',
-    #     'V': 'VZBRGITYUPSDNHLXAWMJQOFECK',
-    #     'VI': 'JPGVOUMFYQBENHZRDKASXLICTW',
-    #     'VII': 'NZJHGRCXMYSWBOUFAIVLPEKQDT',
-    #     'VIII': 'FKQHTLXOCBJSPDZRAMEWNIUYGV',
-    #     'Beta': 'LEYJVCNIXWPBQMDRTAKZGFUHOS',
-    #     'Gamma': 'FSOKANUERHMBTIYCWLQPZXVGJD',
-    #     'Reflector A': 'EJMZALYXVBWFCRQUONTSPIKHGD',
-    #     'Reflector B': 'YRUHQSLDPXNGOKMIEBFZCWVJAT',
-    #     'Reflector C': 'FVPJIAOYEDRZXWGCTKUQSBNMHL',
-    #     'Reflector B Thin': 'ENKQAUYWJICOPBLMDXZVFTHRGS',
-    #     'Reflector C Thin': 'RDOBJNTKVEHMLFCWZAXGYIPSUQ',
-    #     'ETW': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    # }
-
     def __init__(self, left='I', leftstart='a', leftringsetting='a',
                  center='II', centerstart='a', centerringsetting='a',
                  right='III', rightstart='a', rightringsetting='a',
@@ -60,49 +49,20 @@ class Enimga:
         if steckerbrett is not None:
             self.__validate_steckerbrett(steckerbrett=steckerbrett)
 
-        if left not in self.ROTERS:
-            raise ValueError('left Roter is invalid')
-        if leftstart not in self.ALPHA:
-            raise ValueError('leftstart isn\'t valid alpha')
-        if leftringsetting not in self.ALPHA:
-            raise ValueError('leftringsetting isn\'t valid alpha')
-        if center not in self.ROTERS:
-            raise ValueError('Center Roter is invalid')
-        if centerstart not in self.ALPHA:
-            raise ValueError('centerstart isn\'t valid alpha')
-        if centerringsetting not in self.ALPHA:
-            raise ValueError('centerringsetting isn\'t valid alpha')
-        if right not in self.ROTERS:
-            raise ValueError('Right Roter is invalid')
-        if rightstart not in self.ALPHA:
-            raise ValueError('rightstart isn\'t valid alpha')
-        if rightringsetting not in self.ALPHA:
-            raise ValueError('rightringsetting isn\'t valid alpha')
         if reflector not in self.REFLECTORS:
             raise ValueError('reflector is invalid')
 
-        self.right_roter = {"letters": [letter.lower() for letter in self.ROTERS[right]['letters']],
-                            "rotations": self.ALPHA.index(rightstart), "rotate": self.ROTERS[right]['rotate'].lower(),
-                            "ringsetting": self.ALPHA.index(rightringsetting), "roter": right, "start": rightstart}
-        self.right_roter['rletters'] = [k for k, v in sorted(dict(zip(self.ALPHA, self.right_roter['letters'])).items(),
-                                                             key=lambda item: item[1])]
+        self.left_roter = None
+        self.center_roter = None
+        self.right_roter = None
 
-        self.center_roter = {"letters": [letter.lower() for letter in self.ROTERS[center]['letters']],
-                             "rotations": self.ALPHA.index(centerstart), "rotate": self.ROTERS[center]['rotate'].lower(),
-                             "ringsetting": self.ALPHA.index(centerringsetting), "roter": center, "start": centerstart}
-        self.center_roter['rletters'] = [k for k, v in
-                                         sorted(dict(zip(self.ALPHA, self.center_roter['letters'])).items(),
-                                                key=lambda item: item[1])]
-
-        self.left_roter = {"letters": [letter.lower() for letter in self.ROTERS[left]['letters']],
-                           "rotations": self.ALPHA.index(leftstart), "rotate": self.ROTERS[left]['rotate'].lower(),
-                           "ringsetting": self.ALPHA.index(leftringsetting), "roter": left, "start": leftstart}
-        self.left_roter['rletters'] = [k for k, v in sorted(dict(zip(self.ALPHA, self.left_roter['letters'])).items(),
-                                                            key=lambda item: item[1])]
+        self.reset_roters(left=left, leftstart=leftstart, leftringsetting=leftringsetting,
+                          center=center, centerstart=centerstart, centerringsetting=centerringsetting,
+                          right=right, rightstart=rightstart, rightringsetting=rightringsetting)
 
         self.reflector = [letter.lower() for letter in self.REFLECTORS[reflector]]
 
-    def __validate_steckerbrett(self, steckerbrett: dict):
+    def __validate_steckerbrett(self, steckerbrett: dict, full_alpha: bool = False):
         alpha_set = set(self.ALPHA)
         steckerbrett_key_set = set(k.lower() for k in steckerbrett.keys())
         steckerbrett_value_set = set(k.lower() for k in steckerbrett.values())
@@ -110,18 +70,22 @@ class Enimga:
             raise ValueError(f"Steckerbrett keys incorrect unknown {steckerbrett_key_set - alpha_set}")
         if not steckerbrett_value_set.issubset(alpha_set):
             raise ValueError(f"Steckerbrett values incorrect unknown {steckerbrett_value_set - alpha_set}")
-        for k, v in steckerbrett.items():
-            if k in steckerbrett_value_set:
-                raise ValueError(f"Steckerbrett key also in values {k}, this isn't allowed")
-            self.steckerbrett[k] = v
-            self.steckerbrett[v] = k
-
+        if full_alpha:
+            self.steckerbrett = steckerbrett
+        else:
+            for k, v in steckerbrett.items():
+                if k in steckerbrett_value_set:
+                    raise ValueError(f"Steckerbrett key also in values {k}, this isn't allowed")
+                self.steckerbrett[k] = v
+                self.steckerbrett[v] = k
 
     def update_roters(self):
-        if self.ALPHA[self.center_roter['rotations'] % 26] == self.center_roter['rotate']:
+        center_rotate = self.center_roter['rotate'].split('+')
+        right_rotate = self.right_roter['rotate'].split('+')
+        if self.ALPHA[self.center_roter['rotations'] % 26] in center_rotate:
             self.left_roter['rotations'] += 1
             self.right_roter['rotations'] += 1
-        if self.ALPHA[self.right_roter['rotations'] % 26] == self.right_roter['rotate']:
+        if self.ALPHA[self.right_roter['rotations'] % 26] in right_rotate:
             self.center_roter['rotations'] += 1
         self.right_roter['rotations'] += 1
 
@@ -158,13 +122,85 @@ class Enimga:
                 self.ALPHA[(self.center_roter['rotations'] - self.center_roter['ringsetting']) % 26],
                 self.ALPHA[(self.left_roter['rotations'] - self.left_roter['ringsetting']) % 26])
 
-    def get_roter_settings(self):
+    def get_roter_settings(self) -> tuple:
         return ((self.right_roter['roter'], self.right_roter['start'], self.ALPHA[self.right_roter['ringsetting']]),
                 (self.center_roter['roter'], self.center_roter['start'], self.ALPHA[self.center_roter['ringsetting']]),
                 (self.left_roter['roter'], self.left_roter['start'], self.ALPHA[self.left_roter['ringsetting']]))
 
     def get_valid_roters(self):
         return self.ROTERS.keys()
+
+    def get_steckerbrett(self):
+        return self.steckerbrett
+
+    def __set_roters(self, roter, start, ringsetting):
+        current_roter = {"letters": [letter.lower() for letter in self.ROTERS[roter]['letters']],
+                         "rotations": self.ALPHA.index(start),
+                         "rotate": self.ROTERS[roter]['rotate'].lower(),
+                         "ringsetting": self.ALPHA.index(ringsetting), "roter": roter, "start": start}
+        current_roter['rletters'] = [k for k, v in sorted(dict(zip(self.ALPHA, current_roter['letters'])).items(),
+                                                          key=lambda item: item[1])]
+        return current_roter
+
+    def reset_roters(self, left: str = None, leftstart: str = None, leftringsetting: str = None,
+                     center: str = None, centerstart: str = None, centerringsetting: str = None,
+                     right: str = None, rightstart: str = None, rightringsetting: str = None):
+
+        if self.left_roter is not None or self.center_roter is not None or self.right_roter is not None:
+            tmp = self.get_roter_settings()
+
+        if self.left_roter is not None:
+            if left is None:
+                left = tmp[2][0]
+            if leftstart is None:
+                leftstart = tmp[2][1]
+            if leftringsetting is None:
+                leftringsetting = tmp[2][2]
+
+        if self.center_roter is not None:
+            if center is None:
+                center = tmp[1][0]
+            if centerstart is None:
+                centerstart = tmp[1][1]
+            if centerringsetting is None:
+                centerringsetting = tmp[1][2]
+
+        if self.right_roter is not None:
+            if right is None:
+                right = tmp[0][0]
+            if rightstart is None:
+                rightstart = tmp[0][1]
+            if rightringsetting is None:
+                rightringsetting = tmp[0][2]
+
+        if left not in self.ROTERS:
+            raise ValueError('left Roter is invalid')
+        if leftstart not in self.ALPHA:
+            raise ValueError('leftstart isn\'t valid alpha')
+        if leftringsetting not in self.ALPHA:
+            raise ValueError('leftringsetting isn\'t valid alpha')
+        if center not in self.ROTERS:
+            raise ValueError('Center Roter is invalid')
+        if centerstart not in self.ALPHA:
+            raise ValueError('centerstart isn\'t valid alpha')
+        if centerringsetting not in self.ALPHA:
+            raise ValueError('centerringsetting isn\'t valid alpha')
+        if right not in self.ROTERS:
+            raise ValueError('Right Roter is invalid')
+        if rightstart not in self.ALPHA:
+            raise ValueError('rightstart isn\'t valid alpha')
+        if rightringsetting not in self.ALPHA:
+            raise ValueError('rightringsetting isn\'t valid alpha')
+
+        self.right_roter = self.__set_roters(roter=right, start=rightstart, ringsetting=rightringsetting)
+
+        self.center_roter = self.__set_roters(roter=center, start=centerstart, ringsetting=centerringsetting)
+
+        self.left_roter = self.__set_roters(roter=left, start=leftstart, ringsetting=leftringsetting)
+
+    def update_steckerbrett(self, steckerbrett: dict, full_alpha: bool = False):
+        self.__validate_steckerbrett(steckerbrett=steckerbrett, full_alpha=full_alpha)
+        self.reset_roters()
 
 
 if __name__ == "__main__":

@@ -2,18 +2,11 @@ from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.core.window import Window, Keyboard
 from kivy.uix.label import Label
-from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.button import Button
 from kivy.uix.popup import Popup
-from kivy.uix.textinput import TextInput
-from kivy.graphics import Color, Rectangle
-from kivy.lang import Builder
 from kivy.properties import ListProperty
 from time import sleep
 from enimga import Enimga
-from kivy.properties import (
-    NumericProperty, ReferenceListProperty, ObjectProperty, Property
-)
+from kivy.properties import Property
 from kivy.core.audio import SoundLoader
 
 #https://stackoverflow.com/questions/57118705/kivy-define-background-color-of-label
@@ -44,70 +37,60 @@ class ColoredBox(Label):
 
 
 class EnigmaSettings(Widget):
-    left_roter_setting = ObjectProperty(None)
-    center_roter_setting = ObjectProperty(None)
-    right_roter_setting = ObjectProperty(None)
-    left_roter_start = ObjectProperty(None)
-    center_roter_start = ObjectProperty(None)
-    right_roter_start = ObjectProperty(None)
-    left_roter_position = ObjectProperty(None)
-    center_roter_position = ObjectProperty(None)
-    right_roter_position = ObjectProperty(None)
     pass
 
 
 class SteckerbrettSettings(Widget):
-    steckerbrett_q = ObjectProperty(None)
-    steckerbrett_w = ObjectProperty(None)
+    setup = True
+    first = True
 
-    # TODO 'Fix' changing an already changed letter
-    def update(self, text, instance):
+    def __init__(self, steckerbrett: dict, **kwargs):
+        super().__init__(**kwargs)
+        self.alpha_dict = steckerbrett
+
+    def update(self, value, instance):
+
+        # Control automated recursion and initial setup since I'm lazy and didn't populate the text values in the kv file
+        if not self.first or self.setup: return
+
+        # Set that another process has entered this function
+        self.first = False
+
         for wid, widget in self.ids.items():
             if widget.__self__ == instance:
                 break
-        getattr(self, f"steckerbrett_{text}").text = wid.split('_')[-1]
+        wid_letter = wid.split('_')[-1]
 
+        # Fixes if the current letter was changed and need to reset the other pair
+        if self.alpha_dict[wid_letter] != wid_letter:
+            old_letter = self.alpha_dict[wid_letter]
+            getattr(self, f"steckerbrett_{old_letter}").text = old_letter
+            self.alpha_dict[old_letter] = old_letter
+
+        # Fixes if the pair letter was set to another letter and resets its pair
+        if getattr(self, f"steckerbrett_{value}").text != value:
+            old_letter = getattr(self, f"steckerbrett_{value}").text
+            getattr(self, f"steckerbrett_{old_letter}").text = old_letter
+            self.alpha_dict[old_letter] = old_letter
+
+        self.alpha_dict[wid_letter] = value
+        self.alpha_dict[value] = wid_letter
+        getattr(self, f"steckerbrett_{value}").text = wid_letter
+
+        # Reset value for the next run of the function
+        self.first = True
 
     def setup_values(self, alpha):
         for id, widget in self.ids.items():
             if id.endswith("label"): continue
             widget.values = alpha
-            widget.text = id.split('_')[-1]
+            widget.text = self.alpha_dict[id.split('_')[-1]]
+        self.setup = False
 
 
 class EnigmaUI(Widget):
-    output = ObjectProperty(None)
-    output_a = ObjectProperty(None)
-    output_b = ObjectProperty(None)
-    output_c = ObjectProperty(None)
-    output_d = ObjectProperty(None)
-    output_e = ObjectProperty(None)
-    output_f = ObjectProperty(None)
-    output_g = ObjectProperty(None)
-    output_h = ObjectProperty(None)
-    output_i = ObjectProperty(None)
-    output_j = ObjectProperty(None)
-    output_k = ObjectProperty(None)
-    output_l = ObjectProperty(None)
-    output_m = ObjectProperty(None)
-    output_n = ObjectProperty(None)
-    output_o = ObjectProperty(None)
-    output_p = ObjectProperty(None)
-    output_q = ObjectProperty(None)
-    output_r = ObjectProperty(None)
-    output_s = ObjectProperty(None)
-    output_t = ObjectProperty(None)
-    output_u = ObjectProperty(None)
-    output_v = ObjectProperty(None)
-    output_w = ObjectProperty(None)
-    output_x = ObjectProperty(None)
-    output_y = ObjectProperty(None)
-    output_z = ObjectProperty(None)
-    left_roter = ObjectProperty(None)
-    center_roter = ObjectProperty(None)
-    right_roter = ObjectProperty(None)
 
-    e = Enimga(rightstart='b')
+    e = Enimga()
     keysound = SoundLoader.load('data/keyboard.mp3')
 
     def __init__(self, **kwargs):
@@ -124,18 +107,18 @@ class EnigmaUI(Widget):
         Window.unbind(on_key_up=self.key_up)
 
     def key_action(self, *args):
-        # print(f"got a key event: {list(args)}")
         k = list(args)[-2].upper()
         if k.lower() not in self.e.ALPHA: return
         self.output_letter = self.e.encrypt(k.lower()).strip()
+        self.input_letter = k
         self.output.text += self.output_letter.upper()
         if self.keysound:
             self.keysound.seek(0)
             self.keysound.play()
         try:
+            getattr(self, f"output_{self.input_letter.lower()}").background_color = (1, 0, 0, 1)
             getattr(self, f"output_{self.output_letter.lower()}").background_color = (1, 1, 1, 1)
             getattr(self, f"output_{self.output_letter.lower()}").color = (0, 0, 0)
-            # print(getattr(self, f"output_{k.lower()}").size)
         except AttributeError:
             pass
         self.update_roter_dispaly()
@@ -150,13 +133,11 @@ class EnigmaUI(Widget):
             self.left_roter.text = data[2].upper()
 
     def key_up(self, *args):
-        # prin/(f"got a key event: {self.keycode_to_string(value=list(args)[1])}")
         sleep(0.5)
-        # k = self.keycode_to_string(value=list(args)[1]).upper()
         try:
+            getattr(self, f"output_{self.input_letter.lower()}").background_color = (0, 0, 0, 1)
             getattr(self, f"output_{self.output_letter.lower()}").background_color = (0, 0, 0, 1)
             getattr(self, f"output_{self.output_letter.lower()}").color = (1, 1, 1)
-            # print(getattr(self, f"output_{k.lower()}").size)
         except AttributeError:
             pass
 
@@ -210,7 +191,7 @@ class EnigmaUI(Widget):
         # but.bind(on_press=self.pop_close)
         self.main_popup.open()
 
-    def pop_close(self, btn):
+    def settings_close(self):
         right, center, left = self.e.get_roter_settings()
         right_change = not (self.box.right_roter_setting.text, self.box.right_roter_start.text,
                             self.box.right_roter_position.text) == right
@@ -219,27 +200,33 @@ class EnigmaUI(Widget):
         left_change = not (self.box.right_roter_setting.text, self.box.left_roter_start.text,
                            self.box.left_roter_position.text) == left
         if right_change or center_change or left_change:
-            self.output = ""
-            self.e = Enimga(left=self.box.left_roter_setting.text, leftstart=self.box.left_roter_start.text,
-                            leftringsetting=self.box.left_roter_position.text,
-                            center=self.box.center_roter_setting.text, centerstart=self.box.center_roter_start.text,
-                            centerringsetting=self.box.center_roter_position.text,
-                            right=self.box.right_roter_setting.text, rightstart=self.box.right_roter_start.text,
-                            rightringsetting=self.box.right_roter_position.text)
+            self.output.text = ""
+            self.e.reset_roters(left=self.box.left_roter_setting.text, leftstart=self.box.left_roter_start.text,
+                                leftringsetting=self.box.left_roter_position.text,
+                                center=self.box.center_roter_setting.text, centerstart=self.box.center_roter_start.text,
+                                centerringsetting=self.box.center_roter_position.text,
+                                right=self.box.right_roter_setting.text, rightstart=self.box.right_roter_start.text,
+                                rightringsetting=self.box.right_roter_position.text)
             self.update_roter_dispaly()
         self.__key_bind()
         self.main_popup.dismiss()
 
     def steckerbrett(self):
         self.__key_unbind()
-        self.steckerbrett_box = SteckerbrettSettings()
+        self.steckerbrett_box = SteckerbrettSettings(self.e.get_steckerbrett())
         self.steckerbrett_box.setup_values(self.e.ALPHA)
         self.main_popup = Popup(content=self.steckerbrett_box, auto_dismiss=False)
         self.main_popup.open()
 
     def steckerbrett_close(self):
+        if self.steckerbrett_box.alpha_dict != self.e.get_steckerbrett():
+            self.output.text = ""
+            self.e.update_steckerbrett(steckerbrett=self.steckerbrett_box.alpha_dict, full_alpha=True)
+            self.e.reset_roters()
+            self.update_roter_dispaly()
         self.__key_bind()
         self.main_popup.dismiss()
+
 
 class EnigmaApp(App):
 
@@ -248,93 +235,14 @@ class EnigmaApp(App):
     OUTPUT_COLORS = (0, 0, 0, 0)
 
     def build(self):
-        self.lkasjdf = EnigmaUI()
-        # Window.bind(on_key_down=lkasjdf.key_action)
-        # Window.bind(on_key_up=lkasjdf.key_up)
-        return self.lkasjdf
-        # Window.bind(on_key_down=self.key_action)
-        # Window.bind(on_key_up=self.key_up)
-        # root = BoxLayout(orientation='vertical')
-        #
-        # self.output = TextInput(readonly=True)
-        #
-        # root.add_widget(self.output)
-        #
-        # row_1o = BoxLayout(orientation='horizontal')
-        # for letter in ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"]:
-        #     row_1o.add_widget(self.OUTPUT[letter])
-        #
-        # root.add_widget(row_1o)
-        #
-        # row_2o = BoxLayout(orientation="horizontal")
-        # for letter in ["A", "S", "D", "F", "G", "H", "J", "K", "L"]:
-        #     row_2o.add_widget(self.OUTPUT[letter])
-        #
-        # root.add_widget(row_2o)
-        #
-        # row_3o = BoxLayout(orientation="horizontal")
-        # for letter in ["Z", "X", "C", "V", "B", "N", 'M']:
-        #     row_3o.add_widget(self.OUTPUT[letter])
-        #
-        # root.add_widget(row_3o)
-        #
-        # row_1 = BoxLayout(orientation='horizontal')
-        # for letter in ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"]:
-        #     row_1.add_widget(self.KEYS[letter])
-        #
-        # root.add_widget(row_1)
-        #
-        # row_2 = BoxLayout(orientation="horizontal")
-        # for letter in ["A", "S", "D", "F", "G", "H", "J", "K", "L"]:
-        #     row_2.add_widget(self.KEYS[letter])
-        #
-        # root.add_widget(row_2)
-        #
-        # row_3 = BoxLayout(orientation="horizontal")
-        # for letter in ["Z", "X", "C", "V", "B", "N", 'M']:
-        #     row_3.add_widget(self.KEYS[letter])
-        #
-        # root.add_widget(row_3)
-
-        # return root
-
-    def key_action(self, *args):
-        # print(f"got a key event: {list(args)}")
-        k = list(args)[-2].upper()
-        if k in self.KEYS:
-            self.KEYS[k].background_color = (1, 0, 1, 0.25)
-            # print(len(self.output.text.replace(" ", "")) % 5)
-            self.ko = self.e.encrypt(k).strip()
-            self.OUTPUT[self.ko.upper()].background_color = (1, 1, 1, 1)
-            self.OUTPUT[self.ko.upper()].color = (0, 0, 0)
-            if len(self.output.text.replace(" ", "")) % 5 == 0:
-                self.output.text += f" {self.ko}"
-            else:
-                self.output.text += f"{self.ko}"
-
-    def key_up(self, *args):
-        # prin/(f"got a key event: {self.keycode_to_string(value=list(args)[1])}")
-        sleep(0.5)
-        k = self.keycode_to_string(value=list(args)[1]).upper()
-        if k in self.KEYS:
-            self.KEYS[k].background_color = self.KEYS_COLOR
-            self.OUTPUT[self.ko.upper()].background_color = self.OUTPUT_COLORS
-            self.OUTPUT[self.ko.upper()].color = (1, 1, 1)
-
-    def keycode_to_string(self, value):
-        '''Convert a keycode number to a string according to the
-        :attr:`Keyboard.keycodes`. If the value is not found in the
-        keycodes, it will return ''.
-        '''
-        keycodes = list(Keyboard.keycodes.values())
-        if value in keycodes:
-            return list(Keyboard.keycodes.keys())[keycodes.index(value)]
-        return ''
+        self.enigamui = EnigmaUI()
+        return self.enigamui
 
     def close_steckerbrett(self):
-        self.lkasjdf.steckerbrett_close()
+        self.enigamui.steckerbrett_close()
 
     def close_enigma_settings(self):
-        self.lkasjdf.pop_close(None)
+        self.enigamui.settings_close()
+
 
 EnigmaApp().run()
