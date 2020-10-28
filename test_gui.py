@@ -230,10 +230,6 @@ class EnigmaUI(Widget):
 
 class EnigmaApp(App):
 
-    KEYS_COLOR = (1, 0, 0, 1)
-
-    OUTPUT_COLORS = (0, 0, 0, 0)
-
     def build(self):
         self.enigamui = EnigmaUI()
         return self.enigamui

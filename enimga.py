@@ -44,7 +44,21 @@ class Enimga:
                  center='II', centerstart='a', centerringsetting='a',
                  right='III', rightstart='a', rightringsetting='a',
                  reflector='B', steckerbrett: dict = None):
+        """
+        Build an enimga machine
 
+        :param left: Roter key from ROTER for left Roter
+        :param leftstart: Starting character for the left roter
+        :param leftringsetting: change how the letter is encoded leaving the roter for the left roter
+        :param center: Roter key from ROTER for center Roter
+        :param centerstart: Starting character for the center roter
+        :param centerringsetting: change how the letter is encoded leaving the roter for the center roter
+        :param right: Roter key from ROTER for right Roter
+        :param rightstart: Starting character for the right roter
+        :param rightringsetting: change how the letter is encoded leaving the roter for the right roter
+        :param reflector: reflector out of REFLECTORS keys
+        :param steckerbrett: Steckerbrett dictionary of map of characters
+        """
         self.steckerbrett = {k: k for k in self.ALPHA}
         if steckerbrett is not None:
             self.__validate_steckerbrett(steckerbrett=steckerbrett)
@@ -63,6 +77,13 @@ class Enimga:
         self.reflector = [letter.lower() for letter in self.REFLECTORS[reflector]]
 
     def __validate_steckerbrett(self, steckerbrett: dict, full_alpha: bool = False):
+        """
+        Validate the steckerbrett
+
+        :param steckerbrett: Dictionary of mapping characters
+        :param full_alpha: Boolean if the provided dictionary has all alpha characters
+        :return:
+        """
         alpha_set = set(self.ALPHA)
         steckerbrett_key_set = set(k.lower() for k in steckerbrett.keys())
         steckerbrett_value_set = set(k.lower() for k in steckerbrett.values())
@@ -80,26 +101,54 @@ class Enimga:
                 self.steckerbrett[v] = k
 
     def update_roters(self):
+        """
+        Update the roters as the letter is being passed through the first pass
+
+        :return:
+        """
+
+        # Split handles roters that have multiple rotation letters
         center_rotate = self.center_roter['rotate'].split('+')
         right_rotate = self.right_roter['rotate'].split('+')
+
         if self.ALPHA[self.center_roter['rotations'] % 26] in center_rotate:
             self.left_roter['rotations'] += 1
-            self.right_roter['rotations'] += 1
+            self.center_roter['rotations'] += 1
         if self.ALPHA[self.right_roter['rotations'] % 26] in right_rotate:
             self.center_roter['rotations'] += 1
         self.right_roter['rotations'] += 1
 
-    def rotate(self, roter, letter):
+    def rotate(self, roter: dict, letter: chr) -> chr:
+        """
+        Calculate the "encoded" value of the provided letter by the roter
+
+        :param roter: Roter to run the letter through
+        :param letter: letter to encode
+        :return: encoded letter
+        """
         temp = roter['rotations'] - roter['ringsetting']
         return self.ALPHA[
             (self.ALPHA.index(roter['letters'][(self.ALPHA.index(letter) + temp) % 26]) - temp) % 26]
 
-    def rerotate(self, roter, letter):
+    def rerotate(self, roter: dict, letter: chr) -> chr:
+        """
+        Encode letter as it is returning back through the roters
+
+        :param roter: Roter to run the letter through
+        :param letter: letter to encode
+        :return: encoded letter
+        """
         temp = roter['rotations'] - roter['ringsetting']
         return self.ALPHA[
             (self.ALPHA.index(roter['rletters'][(self.ALPHA.index(letter) + temp) % 26]) - temp) % 26]
 
-    def encrypt(self, message):
+    def encrypt(self, message: str) -> str:
+        """
+        Take a string/character and encode it
+
+        :param message: what to encode
+        :return: encoded message
+        """
         encrypted_text = []
         for letter in message.split():
             for letter1 in letter.lower():
@@ -117,23 +166,51 @@ class Enimga:
             encrypted_text.append(' ')
         return ''.join(encrypted_text)
 
-    def get_roter_status(self):
+    def get_roter_status(self) -> tuple:
+        """
+        Get the current status (current letter in window) of the roters
+
+        :return: Tuple of roter status (Right, Center, Left) as looking at the machine
+        """
         return (self.ALPHA[(self.right_roter['rotations'] - self.right_roter['ringsetting']) % 26],
                 self.ALPHA[(self.center_roter['rotations'] - self.center_roter['ringsetting']) % 26],
                 self.ALPHA[(self.left_roter['rotations'] - self.left_roter['ringsetting']) % 26])
 
     def get_roter_settings(self) -> tuple:
+        """
+        Get current settings (which roter, starting position, ring settings) for each roter
+
+        :return: Tuple of roter esettings (Right, Center, Left) as looking at the machine
+        """
         return ((self.right_roter['roter'], self.right_roter['start'], self.ALPHA[self.right_roter['ringsetting']]),
                 (self.center_roter['roter'], self.center_roter['start'], self.ALPHA[self.center_roter['ringsetting']]),
                 (self.left_roter['roter'], self.left_roter['start'], self.ALPHA[self.left_roter['ringsetting']]))
 
-    def get_valid_roters(self):
-        return self.ROTERS.keys()
+    def get_valid_roters(self) -> list:
+        """
+        Get the list of roters coded
 
-    def get_steckerbrett(self):
+        :return: List of valid roters
+        """
+        return list(self.ROTERS.keys())
+
+    def get_steckerbrett(self) -> dict:
+        """
+        Get the current state of the steckerbrett
+
+        :return: Streckerbrett Dictionary
+        """
         return self.steckerbrett
 
-    def __set_roters(self, roter, start, ringsetting):
+    def __set_roters(self, roter: chr, start: chr, ringsetting: chr) -> dict:
+        """
+        Set invidual roter
+
+        :param roter: which roter from ROTERS to use
+        :param start: which starting letter to use
+        :param ringsetting: change how the letter is encoded leaving the roter
+        :return: Dictionary of settings
+        """
         current_roter = {"letters": [letter.lower() for letter in self.ROTERS[roter]['letters']],
                          "rotations": self.ALPHA.index(start),
                          "rotate": self.ROTERS[roter]['rotate'].lower(),
@@ -145,7 +222,21 @@ class Enimga:
     def reset_roters(self, left: str = None, leftstart: str = None, leftringsetting: str = None,
                      center: str = None, centerstart: str = None, centerringsetting: str = None,
                      right: str = None, rightstart: str = None, rightringsetting: str = None):
+        """
+        Updates roters if changes are made after the machine is created,
+         will use the current settings if nothing is provided
 
+        :param left: Roter key from ROTER for left Roter
+        :param leftstart: Starting character for the left roter
+        :param leftringsetting: change how the letter is encoded leaving the roter for the left roter
+        :param center: Roter key from ROTER for center Roter
+        :param centerstart: Starting character for the center roter
+        :param centerringsetting: change how the letter is encoded leaving the roter for the center roter
+        :param right: Roter key from ROTER for right Roter
+        :param rightstart: Starting character for the right roter
+        :param rightringsetting: change how the letter is encoded leaving the roter for the right roter
+        :return:
+        """
         if self.left_roter is not None or self.center_roter is not None or self.right_roter is not None:
             tmp = self.get_roter_settings()
 
@@ -199,6 +290,13 @@ class Enimga:
         self.left_roter = self.__set_roters(roter=left, start=leftstart, ringsetting=leftringsetting)
 
     def update_steckerbrett(self, steckerbrett: dict, full_alpha: bool = False):
+        """
+        Updates the steckerbrett after the machine is created
+
+        :param steckerbrett: Dictionary of character maps
+        :param full_alpha: Boolean if the provided steckerbrett has all alpha characters
+        :return:
+        """
         self.__validate_steckerbrett(steckerbrett=steckerbrett, full_alpha=full_alpha)
         self.reset_roters()
 
